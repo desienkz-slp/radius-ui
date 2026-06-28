@@ -1,0 +1,16 @@
+﻿# Dependencies
+node_modules/
+npm-debug.log*
+
+# Environment Variables
+.env
+
+# Build outputs
+# (client-dist/ should NOT be ignored to allow git push)
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
