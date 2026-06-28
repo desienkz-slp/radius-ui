@@ -21,3 +21,27 @@ Setelah instalasi selesai, buka IP Address server Anda di browser (misal: `http:
 - **Password Default**: `admin123`
 
 âš ï¸ **Sangat disarankan** untuk segera mengganti password `superadmin` setelah berhasil login pertama kali demi keamanan server Anda.
+
+## Cara Update (Pembaruan)
+
+Jika ada pembaruan kode terbaru di GitHub dan Anda ingin memperbarui aplikasi di server Anda yang sudah berjalan, ikuti langkah ini:
+
+1. Masuk ke folder *clone* repositori Anda (bukan folder instalasi Nginx), misalnya:
+   ```bash
+   cd ~/radius-ui
+   ```
+2. Tarik pembaruan terbaru dari GitHub:
+   ```bash
+   git pull origin main
+   ```
+   *(Jika Anda mendapati error "unrelated histories" karena riwayat GitHub telah di-reset oleh developer, gunakan perintah ini sebagai gantinya: `git fetch origin && git reset --hard origin/main`)*
+3. Salin/Timpa file terbaru ke direktori aktif (Nginx):
+   ```bash
+   cp -r ~/radius-ui/client-dist/* /var/www/radius-ui/client-dist/
+   cp -r ~/radius-ui/server/* /var/www/radius-ui/server/
+   ```
+4. Restart *backend API* agar memuat kode *server* terbaru:
+   ```bash
+   pm2 restart radius-api
+   ```
+5. Lakukan **Hard Refresh (Ctrl + F5)** pada browser Anda untuk melihat perubahan tampilan.
