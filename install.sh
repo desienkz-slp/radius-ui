@@ -150,6 +150,23 @@ systemctl enable nginx
 systemctl enable freeradius
 systemctl restart freeradius
 
+echo "[*] Setting up Logrotate for FreeRADIUS Radacct..."
+cat << 'EOF_LOG' > /etc/logrotate.d/freeradius-radacct
+/var/log/freeradius/radacct/*/detail-* {
+    su freerad freerad
+    daily
+    rotate 2
+    missingok
+    compress
+    notifempty
+    nocreate
+    sharedscripts
+    postrotate
+        find /var/log/freeradius/radacct -name 'detail-*' -mtime +2 -delete 2>/dev/null || true
+    endscript
+}
+EOF_LOG
+
 echo "[5/8] Moving Radius-UI files to /var/www/radius-ui..."
 APP_DIR="/var/www/radius-ui"
 rm -rf "$APP_DIR"
