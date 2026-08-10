@@ -1,4 +1,4 @@
-# NETORA-Radius
+﻿# NETORA-Radius
 
 Sistem Manajemen Jaringan berbasis Web UI untuk otentikasi (FreeRADIUS) dan VPN (WireGuard & L2TP).
 
@@ -45,22 +45,3 @@ Jika ada pembaruan kode terbaru di GitHub dan Anda ingin memperbarui aplikasi di
    pm2 restart radius-api
    ```
 5. Lakukan **Hard Refresh (Ctrl + F5)** pada browser Anda untuk melihat perubahan tampilan.
-
-## Mengaktifkan Fitur Auto-Update (CI/CD)
-
-Jika Anda ingin server Anda secara otomatis mengambil pembaruan terbaru dari GitHub tanpa perlu melakukan langkah di atas secara manual, Anda bisa mengaktifkan *script auto-update*.
-
-Jalankan perintah berikut di server Anda:
-
-```bash
-# 1. Masuk ke folder aplikasi Anda (Sesuaikan jika letaknya berbeda)
-cd /var/www/radius-ui
-
-# 2. Tarik update terbaru dari GitHub (yang berisi script tadi)
-git pull
-
-# 3. Jalankan script setup-autoupdate-nya
-sudo bash setup-autoupdate.sh
-```
-
-Setelah dijalankan, server akan mengecek GitHub secara otomatis setiap menit. Semua log aktivitas *auto-update* dapat dilihat di `/var/log/radius-autoupdate.log`.
