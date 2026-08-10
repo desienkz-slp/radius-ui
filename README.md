@@ -1,4 +1,4 @@
-# NETORA-Radius
+﻿# NETORA-Radius
 
 Sistem Manajemen Jaringan berbasis Web UI untuk otentikasi (FreeRADIUS) dan VPN (WireGuard & L2TP).
 
@@ -24,25 +24,15 @@ Setelah instalasi selesai, buka IP Address server Anda di browser (misal: `http:
 
 ## Cara Update (Pembaruan)
 
-Jika ada pembaruan kode terbaru di GitHub dan Anda ingin memperbarui aplikasi di server Anda yang sudah berjalan, ikuti langkah ini:
+Jika ada pembaruan kode terbaru di GitHub dan Anda ingin memperbarui aplikasi di server Anda yang sudah berjalan, Anda dapat menggunakan script pembaruan otomatis yang telah disediakan.
 
 1. Masuk ke folder *clone* repositori Anda (bukan folder instalasi Nginx), misalnya:
    ```bash
    cd ~/radius-ui
    ```
-2. Tarik pembaruan terbaru dari GitHub:
+2. Jalankan script update:
    ```bash
-   git pull origin main
+   bash update.sh
    ```
-   *(Jika Anda mendapati error "unrelated histories" karena riwayat GitHub telah di-reset oleh developer, gunakan perintah ini sebagai gantinya: `git fetch origin && git reset --hard origin/main`)*
-   *(Jika Anda mendapati error "fatal: not a git repository", itu berarti server Anda belum terhubung dengan Git. Jalankan perintah ini: `git init && git remote add origin https://github.com/desienkz-slp/radius-ui.git && git fetch && git reset --hard origin/main`)*
-3. Salin/Timpa file terbaru ke direktori aktif (Nginx):
-   ```bash
-   cp -r ~/radius-ui/client-dist/* /var/www/radius-ui/client-dist/
-   cp -r ~/radius-ui/server/* /var/www/radius-ui/server/
-   ```
-4. Restart *backend API* agar memuat kode *server* terbaru:
-   ```bash
-   pm2 restart radius-api
-   ```
-5. Lakukan **Hard Refresh (Ctrl + F5)** pada browser Anda untuk melihat perubahan tampilan.
+
+*(Jika Anda mendapati error "fatal: not a git repository" saat update, itu berarti server Anda belum terhubung dengan Git. Jalankan perintah ini: `git init && git remote add origin https://github.com/desienkz-slp/radius-ui.git && git fetch && git reset --hard origin/main`)*
