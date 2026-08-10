@@ -1,4 +1,4 @@
-﻿# NETORA-Radius
+# NETORA-Radius
 
 Sistem Manajemen Jaringan berbasis Web UI untuk otentikasi (FreeRADIUS) dan VPN (WireGuard & L2TP).
 
@@ -35,6 +35,7 @@ Jika ada pembaruan kode terbaru di GitHub dan Anda ingin memperbarui aplikasi di
    git pull origin main
    ```
    *(Jika Anda mendapati error "unrelated histories" karena riwayat GitHub telah di-reset oleh developer, gunakan perintah ini sebagai gantinya: `git fetch origin && git reset --hard origin/main`)*
+   *(Jika Anda mendapati error "fatal: not a git repository", itu berarti server Anda belum terhubung dengan Git. Jalankan perintah ini: `git init && git remote add origin https://github.com/desienkz-slp/radius-ui.git && git fetch && git reset --hard origin/main`)*
 3. Salin/Timpa file terbaru ke direktori aktif (Nginx):
    ```bash
    cp -r ~/radius-ui/client-dist/* /var/www/radius-ui/client-dist/
