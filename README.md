@@ -24,9 +24,23 @@ Setelah instalasi selesai, buka IP Address server Anda di browser (misal: `http:
 
 ## Cara Update (Pembaruan)
 
-Jika ada pembaruan kode terbaru di GitHub dan Anda ingin memperbarui aplikasi di server Anda yang sudah berjalan, Anda dapat menggunakan script pembaruan otomatis yang telah disediakan.
+Mulai versi terbaru, NETORA-Radius mendukung pembaruan otomatis (Auto-Update) langsung dari Web UI (Dashboard Admin).
 
-1. Masuk ke folder *clone* repositori Anda (bukan folder instalasi Nginx), misalnya:
+### Opsi 1: Auto-Update via Web UI (Rekomendasi)
+Jika ada rilis terbaru di GitHub, akan muncul tombol **Update Available** di pojok kanan atas panel *Header* Anda. Cukup klik tombol tersebut untuk mengupdate dan me-restart sistem secara otomatis.
+
+**PENTING: Konfigurasi Git Passwordless**
+Agar fitur Auto-Update Web UI berfungsi di latar belakang tanpa terhenti karena meminta password, jalankan perintah ini **satu kali saja** di terminal server Anda:
+```bash
+cd /var/www/radius-ui  # Atau direktori tempat Anda men-clone repo
+git config --global credential.helper store
+git pull origin main
+```
+*(Masukkan username & password/Personal Access Token GitHub Anda saat diminta. Git akan menyimpannya secara permanen untuk keperluan update-update otomatis selanjutnya).*
+
+### Opsi 2: Update Manual via Terminal
+Jika Anda sedang menggunakan terminal SSH:
+1. Masuk ke folder *clone* repositori Anda:
    ```bash
    cd /var/www/radius-ui
    ```
