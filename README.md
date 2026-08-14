@@ -28,7 +28,7 @@ Jika ada pembaruan kode terbaru di GitHub dan Anda ingin memperbarui aplikasi di
 
 1. Masuk ke folder *clone* repositori Anda (bukan folder instalasi Nginx), misalnya:
    ```bash
-   cd ~/radius-ui
+   cd /var/www/radius-ui
    ```
 2. Jalankan script update:
    ```bash
