@@ -36,7 +36,6 @@ cd /var/www/radius-ui  # Atau direktori tempat Anda men-clone repo
 git config --global credential.helper store
 git pull origin main
 ```
-*(Masukkan username & password/Personal Access Token GitHub Anda saat diminta. Git akan menyimpannya secara permanen untuk keperluan update-update otomatis selanjutnya).*
 
 ### Opsi 2: Update Manual via Terminal
 Jika Anda sedang menggunakan terminal SSH:
