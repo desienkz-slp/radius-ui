@@ -178,8 +178,8 @@ cd "$APP_DIR"
 git init
 git remote add origin https://github.com/desienkz-slp/radius-ui.git
 git fetch origin
-git branch -M main
 git reset --hard origin/main
+git branch -M main
 chown -R www-data:www-data "$APP_DIR"
 
 echo "[6/8] Setting up Node.js Backend..."
