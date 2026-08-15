@@ -173,6 +173,15 @@ rm -rf "$APP_DIR"
 mkdir -p "$APP_DIR"
 cp -r "$INSTALL_DIR/"* "$APP_DIR/"
 
+echo "[*] Initializing Git repository for Auto-Update feature..."
+cd "$APP_DIR"
+git init
+git remote add origin https://github.com/desienkz-slp/radius-ui.git
+git fetch origin
+git branch -M main
+git reset --hard origin/main
+chown -R www-data:www-data "$APP_DIR"
+
 echo "[6/8] Setting up Node.js Backend..."
 cd "$APP_DIR/server"
 npm install --omit=dev
