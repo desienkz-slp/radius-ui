@@ -39,7 +39,7 @@ apt-get install -y nodejs
 npm install -g pm2
 
 echo "[4/8] Installing Nginx, FreeRADIUS, and network components..."
-apt-get install -y nginx freeradius freeradius-mysql freeradius-utils wireguard iptables strongswan xl2tpd ppp
+apt-get install -y nginx freeradius freeradius-mysql freeradius-utils wireguard iptables strongswan xl2tpd ppp radcli
 
 echo "[*] Setting up WireGuard wg0 interface..."
 umask 077
@@ -115,6 +115,31 @@ nodefaultroute
 debug
 proxyarp
 connect-delay 5000
+plugin radius.so
+plugin radattr.so
+radius-config-file /etc/radcli/radiusclient.conf
+EOF
+
+echo "[*] Configuring radcli for PPP RADIUS Auth..."
+mkdir -p /etc/radcli
+cat << 'EOF' > /etc/radcli/radiusclient.conf
+auth_order      radius
+login_tries     4
+login_timeout   60
+nologin /etc/nologin
+issue   /etc/radcli/issue
+authserver      localhost:1812
+acctserver      localhost:1813
+servers         /etc/radcli/servers
+dictionary      /etc/radcli/dictionary
+default_realm
+radius_timeout  10
+radius_retries  3
+bindaddr *
+EOF
+
+cat << 'EOF' > /etc/radcli/servers
+localhost testing123
 EOF
 
 systemctl enable strongswan-starter
@@ -243,6 +268,22 @@ ufw allow 1812/udp    # FreeRADIUS Auth
 ufw allow 1813/udp    # FreeRADIUS Acct
 ufw allow 3799/udp    # FreeRADIUS CoA
 ufw allow 51820/udp   # WireGuard
+ufw allow 500/udp     # IPsec IKE
+ufw allow 4500/udp    # IPsec NAT-T
+ufw allow 1701/udp    # L2TP
+
+echo "[*] Configuring UFW NAT Masquerade and Forwarding..."
+sed -i 's/DEFAULT_FORWARD_POLICY="DROP"/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
+
+cat << 'EOF' > /etc/ufw/before.rules.tmp
+*nat
+:POSTROUTING ACCEPT [0:0]
+-A POSTROUTING -s 10.8.0.0/24 -j MASQUERADE
+-A POSTROUTING -s 10.9.0.0/24 -j MASQUERADE
+COMMIT
+EOF
+cat /etc/ufw/before.rules >> /etc/ufw/before.rules.tmp
+mv /etc/ufw/before.rules.tmp /etc/ufw/before.rules
 
 ufw --force enable
 
