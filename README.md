@@ -36,7 +36,7 @@ Jika ada rilis terbaru di GitHub, akan muncul tombol **Update Available** di poj
 Agar fitur Auto-Update Web UI berfungsi di latar belakang tanpa terhenti karena meminta password, jalankan perintah ini **satu kali saja** di terminal server Anda:
 ```bash
 cd /var/www/radius-ui  # Atau direktori tempat Anda men-clone repo
-git config --global credential.helper store
+git config --global --add safe.directory /var/www/radius-ui
 git pull origin main
 ```
 
