@@ -205,6 +205,7 @@ git remote add origin https://github.com/desienkz-slp/radius-ui.git
 git fetch origin
 git reset --hard origin/main
 git branch -M main
+git config --global --add safe.directory "$APP_DIR"
 chown -R www-data:www-data "$APP_DIR"
 
 echo "[6/8] Setting up Node.js Backend..."
