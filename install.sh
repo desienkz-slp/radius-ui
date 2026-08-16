@@ -53,8 +53,7 @@ EOF
 echo "PrivateKey = $(cat /etc/wireguard/privatekey)" >> /etc/wireguard/wg0.conf
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
 sysctl -p
-systemctl enable wg-quick@wg0
-systemctl start wg-quick@wg0
+systemctl disable --now wg-quick@wg0 || true
 
 echo "[*] Setting up L2TP/IPsec (xl2tpd & strongswan)..."
 cat << 'EOF' > /etc/ipsec.conf
@@ -142,10 +141,8 @@ cat << 'EOF' > /etc/radiusclient/servers
 localhost testing123
 EOF
 
-systemctl enable strongswan-starter
-systemctl restart strongswan-starter
-systemctl enable xl2tpd
-systemctl restart xl2tpd
+systemctl disable --now strongswan-starter || true
+systemctl disable --now xl2tpd || true
 
 umask 022
 
@@ -287,10 +284,8 @@ mv /etc/ufw/before.rules.tmp /etc/ufw/before.rules
 
 ufw --force enable
 
-echo "[*] Restarting VPN services to synchronize with new Firewall rules..."
-systemctl restart wg-quick@wg0 || true
-systemctl restart strongswan-starter || true
-systemctl restart xl2tpd || true
+echo "[*] VPN services are installed but disabled by default."
+echo "[*] You can start them from the Radius-UI Dashboard."
 
 echo "=========================================================="
 echo "âœ… SECURE INSTALLATION COMPLETE!"
