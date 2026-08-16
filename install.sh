@@ -287,6 +287,11 @@ mv /etc/ufw/before.rules.tmp /etc/ufw/before.rules
 
 ufw --force enable
 
+echo "[*] Restarting VPN services to synchronize with new Firewall rules..."
+systemctl restart wg-quick@wg0 || true
+systemctl restart strongswan-starter || true
+systemctl restart xl2tpd || true
+
 echo "=========================================================="
 echo "âœ… SECURE INSTALLATION COMPLETE!"
 echo "You can now access Radius-UI at: http://$(hostname -I | awk '{print $1}')"
