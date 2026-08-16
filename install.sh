@@ -39,7 +39,7 @@ apt-get install -y nodejs
 npm install -g pm2
 
 echo "[4/8] Installing Nginx, FreeRADIUS, and network components..."
-apt-get install -y nginx freeradius freeradius-mysql freeradius-utils wireguard iptables strongswan xl2tpd ppp radcli
+apt-get install -y nginx freeradius freeradius-mysql freeradius-utils wireguard iptables strongswan xl2tpd ppp
 
 echo "[*] Setting up WireGuard wg0 interface..."
 umask 077
@@ -117,28 +117,28 @@ proxyarp
 connect-delay 5000
 plugin radius.so
 plugin radattr.so
-radius-config-file /etc/radcli/radiusclient.conf
+radius-config-file /etc/radiusclient/radiusclient.conf
 EOF
 
-echo "[*] Configuring radcli for PPP RADIUS Auth..."
-mkdir -p /etc/radcli
-cat << 'EOF' > /etc/radcli/radiusclient.conf
+echo "[*] Configuring radiusclient for PPP RADIUS Auth..."
+mkdir -p /etc/radiusclient
+cat << 'EOF' > /etc/radiusclient/radiusclient.conf
 auth_order      radius
 login_tries     4
 login_timeout   60
 nologin /etc/nologin
-issue   /etc/radcli/issue
+issue   /etc/radiusclient/issue
 authserver      localhost:1812
 acctserver      localhost:1813
-servers         /etc/radcli/servers
-dictionary      /etc/radcli/dictionary
+servers         /etc/radiusclient/servers
+dictionary      /etc/freeradius/3.0/dictionary
 default_realm
 radius_timeout  10
 radius_retries  3
 bindaddr *
 EOF
 
-cat << 'EOF' > /etc/radcli/servers
+cat << 'EOF' > /etc/radiusclient/servers
 localhost testing123
 EOF
 

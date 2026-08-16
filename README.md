@@ -8,9 +8,6 @@ Sistem Manajemen Jaringan berbasis Web UI untuk otentikasi (FreeRADIUS) dan VPN 
 2. Masuk ke direktori repositori ini (`cd radius-ui` atau sesuai nama foldernya).
 3. Jalankan perintah instalasi otomatis sebagai `root`:
    ```bash
-   apt install git -y
-   git clone https://github.com/desienkz-slp/radius-ui.git
-   cd radius-ui
    chmod +x install.sh
    ./install.sh
    ```
