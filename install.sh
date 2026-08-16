@@ -53,7 +53,8 @@ EOF
 echo "PrivateKey = $(cat /etc/wireguard/privatekey)" >> /etc/wireguard/wg0.conf
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
 sysctl -p
-systemctl disable --now wg-quick@wg0 || true
+systemctl stop wg-quick@wg0 || true
+systemctl disable wg-quick@wg0 || true
 
 echo "[*] Setting up L2TP/IPsec (xl2tpd & strongswan)..."
 cat << 'EOF' > /etc/ipsec.conf
@@ -141,8 +142,10 @@ cat << 'EOF' > /etc/radiusclient/servers
 localhost testing123
 EOF
 
-systemctl disable --now strongswan-starter || true
-systemctl disable --now xl2tpd || true
+systemctl stop strongswan-starter || true
+systemctl disable strongswan-starter || true
+systemctl stop xl2tpd || true
+systemctl disable xl2tpd || true
 
 umask 022
 
