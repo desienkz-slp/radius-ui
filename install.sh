@@ -208,6 +208,9 @@ git branch -M main
 git config --global --add safe.directory "$APP_DIR"
 chown -R www-data:www-data "$APP_DIR"
 
+echo "[*] Running FreeRADIUS fixes from latest repo..."
+bash "$APP_DIR/scripts/fix-freeradius.sh"
+
 echo "[6/8] Setting up Node.js Backend..."
 cd "$APP_DIR/server"
 npm install --omit=dev
