@@ -52,3 +52,14 @@ Jika Anda sedang menggunakan terminal SSH:
    ```
 
 *(Jika Anda mendapati error "fatal: not a git repository" saat update, itu berarti server Anda belum terhubung dengan Git. Jalankan perintah ini: `git init && git remote add origin https://github.com/desienkz-slp/radius-ui.git && git fetch && git reset --hard origin/main`)*
+
+## Catatan Penting
+
+### Username dengan Karakter `@` (Email)
+Secara bawaan (*default*), FreeRADIUS memotong nama user di belakang tanda `@` karena menganggapnya sebagai *realm* (domain). Ini akan menyebabkan user dengan tanda `@` gagal terhubung (Authentication Failed) karena namanya tidak akan ditemukan di database.
+
+Untuk mengatasi hal ini dan mengizinkan pemakaian tanda `@` di Username PPP, Anda wajib mematikan modul `suffix` pada server Radius secara manual. Jalankan perintah ini di Terminal/SSH Anda (cukup sekali di awal instalasi):
+
+```bash
+sed -i 's/^[[:space:]]*suffix/#\tsuffix/g' /etc/freeradius/3.0/sites-enabled/default && systemctl restart freeradius
+```
