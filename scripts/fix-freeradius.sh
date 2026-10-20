@@ -33,6 +33,35 @@ if [ -f "$IPSEC_CONF" ] && grep -q 'conn L2TP-PSK-noNAT' "$IPSEC_CONF" && ! grep
     ipsec reload || systemctl reload strongswan-starter || echo "[System] ipsec reload failed, restart strongswan-starter manually."
 fi
 
+# Patch pppd RADIUS auth for L2TP (mirrors installer). Idempotent: only adds what is missing.
+PPP_OPTS="/etc/ppp/options.xl2tpd"
+RC_DIR="/etc/radiusclient"
+if [ -f "$PPP_OPTS" ] && ! grep -q '^[[:space:]]*plugin[[:space:]]\+radius.so' "$PPP_OPTS"; then
+    echo "[System] Patching $PPP_OPTS with pppd RADIUS plugin..."
+    cp "$PPP_OPTS" "$PPP_OPTS.bak.$(date +%Y%m%d%H%M%S)"
+    printf '\nplugin radius.so\nplugin radattr.so\nradius-config-file %s/radiusclient.conf\n' "$RC_DIR" >> "$PPP_OPTS"
+    mkdir -p "$RC_DIR"
+    if [ ! -f "$RC_DIR/radiusclient.conf" ]; then
+        cat > "$RC_DIR/radiusclient.conf" <<'EOF'
+auth_order      radius
+login_tries     4
+login_timeout   60
+nologin /etc/nologin
+issue   /etc/radiusclient/issue
+authserver      localhost:1812
+acctserver      localhost:1813
+servers         /etc/radiusclient/servers
+dictionary      /etc/freeradius/3.0/dictionary
+default_realm
+radius_timeout  10
+radius_retries  3
+bindaddr *
+EOF
+    fi
+    [ -f "$RC_DIR/servers" ] || { echo "localhost testing123" > "$RC_DIR/servers"; chmod 600 "$RC_DIR/servers"; }
+    systemctl restart xl2tpd || echo "[System] xl2tpd restart failed, restart manually."
+fi
+
 # Ensure UFW allows L2TP/IPsec (IKE, NAT-T, L2TP, ESP). Idempotent: existing rules are skipped.
 if command -v ufw >/dev/null 2>&1; then
     echo "[System] Ensuring UFW rules for L2TP/IPsec..."
