@@ -275,6 +275,7 @@ ufw allow 51820/udp   # WireGuard
 ufw allow 500/udp     # IPsec IKE
 ufw allow 4500/udp    # IPsec NAT-T
 ufw allow 1701/udp    # L2TP
+ufw allow proto esp from any to any   # IPsec ESP (IP proto 50)
 
 echo "[*] Configuring UFW NAT Masquerade and Forwarding..."
 sed -i 's/DEFAULT_FORWARD_POLICY="DROP"/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
