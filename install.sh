@@ -68,7 +68,7 @@ conn L2TP-PSK-NAT
 
 conn L2TP-PSK-noNAT
     authby=secret
-    pfs=no
+    esp=aes256-sha1-modp1024,aes192-sha1-modp1024,aes128-sha1-modp1024,aes256-sha1,aes192-sha1,aes128-sha1,3des-sha1
     auto=add
     keyingtries=3
     rekey=no
