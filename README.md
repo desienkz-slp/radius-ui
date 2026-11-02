@@ -40,18 +40,36 @@ git config --global --add safe.directory /var/www/radius-ui
 git pull origin main
 ```
 
-### Opsi 2: Update Manual via Terminal
-Jika Anda sedang menggunakan terminal SSH:
-1. Masuk ke folder *clone* repositori Anda:
-   ```bash
-   cd /var/www/radius-ui
-   ```
-2. Jalankan script update:
-   ```bash
-   bash update.sh
-   ```
+### Opsi 2: Update Manual via Terminal (Command)
+Jika Anda ingin update langsung dari SSH tanpa Web UI, jalankan **satu perintah** berikut
+di direktori aplikasi (default `/var/www/radius-ui`):
 
-*(Jika Anda mendapati error "fatal: not a git repository" saat update, itu berarti server Anda belum terhubung dengan Git. Jalankan perintah ini: `git init && git remote add origin https://github.com/desienkz-slp/radius-ui.git && git fetch && git reset --hard origin/main`)*
+```bash
+cd /var/www/radius-ui && git pull origin main && pm2 restart radius-api
+```
+
+Perintah di atas menarik kode terbaru dari GitHub lalu me-restart backend. Versi di footer
+akan otomatis ikut terbaru (dibaca dari `server/version.json`). Lakukan **Hard Refresh**
+(Ctrl + F5) di browser untuk memuat UI terbaru.
+
+> **Catatan:** jika pernah muncul pesan `Please commit your changes or stash them`
+> (ada file yang berubah lokal), paksa samakan dengan GitHub:
+> ```bash
+> cd /var/www/radius-ui && git fetch origin && git reset --hard origin/main && pm2 restart radius-api
+> ```
+
+#### Jika server belum terhubung Git (error `fatal: not a git repository`)
+Jalankan **sekali saja** untuk menghubungkan direktori ke repo, lalu update normal:
+```bash
+cd /var/www/radius-ui
+git init
+git remote add origin https://github.com/desienkz-slp/radius-ui.git
+git fetch origin
+git reset --hard origin/main
+git branch -M main
+git config --global --add safe.directory /var/www/radius-ui
+pm2 restart radius-api
+```
 
 ## Catatan Penting
 
