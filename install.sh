@@ -211,6 +211,9 @@ chown -R www-data:www-data "$APP_DIR"
 echo "[*] Running FreeRADIUS fixes from latest repo..."
 bash "$APP_DIR/scripts/fix-freeradius.sh"
 
+echo "[*] Setting MariaDB timezone to match OS (WIB)..."
+bash "$APP_DIR/scripts/fix-mariadb-timezone.sh"
+
 echo "[6/8] Setting up Node.js Backend..."
 cd "$APP_DIR/server"
 npm install --omit=dev
